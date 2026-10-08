@@ -1,0 +1,62 @@
+[
+    {
+        "name": "Lahore",
+        "lat": 31.5204,
+        "lng": 74.3587,
+        "description": "My city"
+    },
+    {
+        "name": "Islamabad",
+        "lat": 33.6844,
+        "lng": 73.0479,
+        "description": "Capital of Pakistan"
+    },
+    {
+        "name": "Karachi",
+        "lat": 24.8607,
+        "lng": 67.0011,
+        "description": "Largest city of Pakistan"
+    },
+    {
+        "name": "Peshawar",
+        "lat": 34.0151,
+        "lng": 71.5249,
+        "description": "City in Khyber Pakhtunkhwa"
+    },
+    {
+        "name": "Quetta",
+        "lat": 30.1798,
+        "lng": 66.9750,
+        "description": "Capital of Balochistan"
+    },
+    {
+        "name": "Multan",
+        "lat": 30.1575,
+        "lng": 71.5249,
+        "description": "City in Punjab"
+    },
+    {
+        "name": "Faisalabad",
+        "lat": 31.4504,
+        "lng": 73.1350,
+        "description": "City in Punjab"
+    },
+    {
+        "name": "Baku",
+        "lat": 40.4093,
+        "lng": 49.8671,
+        "description": "A place I want to visit"
+    },
+    {
+        "name": "Istanbul",
+        "lat": 41.0082,
+        "lng": 28.9784,
+        "description": "A place I want to visit"  
+    },
+    {
+        "name": "London",
+        "lat": 51.5074,
+        "lng": -0.1278,
+        "description": "A place I want to visit"
+    }
+]
