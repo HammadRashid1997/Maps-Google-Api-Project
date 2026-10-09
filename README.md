@@ -1,51 +1,72 @@
 # 📍 My Places Map
 
-A small browser-based project for exploring favorite places on an interactive Google Map. It loads each place’s coordinates and description from `places.json`, adds a marker to the map, and shows a place card when you click that marker.
+A lightweight browser app that renders a Google Map and plots a collection of favorite locations from a JSON file. Each marker opens a custom info window with the location name and description.
 
-## ✨ Features
+## Overview
 
-- 🗺️ Displays places using the Google Maps JavaScript API.
-- 📌 Adds a map marker for every place in `places.json`.
-- 💬 Shows the place name and description when a marker is selected.
-- 🧭 Includes example locations in Pakistan and a few destinations abroad.
+This project demonstrates how to:
 
-## 🚀 Get started
+- load the Google Maps JavaScript API in the browser
+- fetch place data from a local JSON file
+- add markers for each location
+- open an info window when a marker is clicked
+- keep the API key outside of version control
 
-### 1. Set up a Google Maps API key
+## Features
 
-In Google Cloud, enable the **Maps JavaScript API** and create an API key. Restrict the key to the Maps JavaScript API and, when possible, to the websites where you will run this project.
+- Interactive map centered on Pakistan by default
+- Marker for each place defined in `places.json`
+- Custom info window card with icon, title, and description
+- Simple styling for a clean map and location cards
+- Works through a local web server for browser-safe JSON loading
 
-Create a `config.js` file in the project folder and add your key:
+## Project structure
+
+- `index.html` — page layout and script loading
+- `style.css` — map and info card styling
+- `script.js` — initializes the map, fetches `places.json`, and creates markers
+- `places.json` — list of mapped locations and coordinates
+- `config.js` — local Google Maps API key (ignored by Git)
+
+## Getting started
+
+### 1. Create a Google Maps API key
+
+In Google Cloud Console:
+
+1. Enable the Maps JavaScript API.
+2. Create an API key.
+3. Restrict the key to the Maps JavaScript API and only trusted website origins if possible.
+
+Create a `config.js` file in the root of the project with the following content:
 
 ```js
 const GOOGLE_MAPS_API_KEY = "YOUR_API_KEY";
 ```
 
-`config.js` is excluded from Git, so your local key will not be included in commits. Keep the key restricted; a key used in a browser is visible to visitors.
+This file is intentionally excluded from Git via `.gitignore`, so your key stays local.
 
-### 2. Start the website
+### 2. Run the app locally
 
-**With Live Server in VS Code:**
+Use any local static server. For example:
 
-1. Install the **Live Server** extension by Ritwick Dey.
-2. Open the project folder in VS Code.
-3. Right-click `index.html` in the Explorer and choose **Open with Live Server**. You can also click **Go Live** in the status bar.
-
-**Or with Python:**
-
-Open a terminal in the project folder and run:
-
-```sh
+```bash
 python3 -m http.server 8000
 ```
 
-Then visit [http://localhost:8000](http://localhost:8000).
+Then open:
 
-> 💡 Use a local web server (Live Server or Python) rather than opening `index.html` directly. The app fetches `places.json`, which browsers may block when loaded from a local file.
+```text
+http://localhost:8000
+```
 
-## 📝 Add your own places
+You can also use VS Code's Live Server extension if preferred.
 
-Edit `places.json`. Each place needs a name, latitude, longitude, and description:
+> Note: Opening the page directly from the filesystem may block `fetch("places.json")` in the browser, so a local web server is recommended.
+
+## Adding your own places
+
+Edit `places.json` and add objects in this format:
 
 ```json
 {
@@ -56,12 +77,25 @@ Edit `places.json`. Each place needs a name, latitude, longitude, and descriptio
 }
 ```
 
-Add each new place as an object in the JSON array, separating entries with commas. Use valid latitude and longitude coordinates for the locations you want to show.
+Each entry requires:
 
-## 🧰 Project files
+- `name`: display label
+- `lat`: latitude
+- `lng`: longitude
+- `description`: text shown in the marker info window
 
-- `index.html` — page structure and script/style links.
-- `style.css` — map and place-card appearance.
-- `script.js` — loads Google Maps and creates markers and info cards.
-- `places.json` — place names, coordinates, and descriptions.
-- `config.js` — your local Google Maps API key (not tracked by Git).
+## How it works
+
+`script.js` does the following:
+
+1. Initializes a Google map with a default center and zoom.
+2. Fetches `places.json` from the project root.
+3. Iterates through each location.
+4. Creates a Google Maps marker for each place.
+5. Opens an `InfoWindow` showing the location's card when clicked.
+
+## Notes
+
+- Keep the API key restricted in production or shared environments.
+- Use valid latitude and longitude values for all locations.
+- This project is meant as a simple demonstration of a map-based personal places viewer.
