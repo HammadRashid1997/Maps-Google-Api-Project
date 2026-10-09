@@ -1,38 +1,455 @@
+
+/* =========================
+   1. Global Styles
+========================= */
+
+:root {
+    --color-primary: #2563eb;
+    --color-primary-hover: #1d4ed8;
+    --color-text: #1f2937;
+    --color-muted: #6b7280;
+    --color-border: #e5e7eb;
+    --color-surface: #ffffff;
+    --color-background: #f8fafc;
+    --color-primary-light: #eff6ff;
+    --color-primary-border: #dbeafe;
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+
+    --shadow-card: 0 4px 18px rgba(15, 23, 42, 0.06);
+}
+
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    padding: 24px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--color-text);
+    background: var(--color-background);
+    line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+p {
+    margin-top: 0;
 }
 
 h1 {
+    margin-bottom: 24px;
     text-align: center;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
+
+h2 {
+    margin-bottom: 20px;
+    font-size: 22px;
+    line-height: 1.3;
+}
+
+
+/* =========================
+   2. Shared Section Styles
+========================= */
+
+.place-search,
+.distance-calculator {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto 20px;
+    padding: 24px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+}
+
+
+/* =========================
+   3. Place Search
+========================= */
+
+.place-search label,
+.distance-controls label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--color-text);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.search-field {
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+}
+
+.search-field input {
+    flex: 1;
+    min-width: 0;
+    min-height: 44px;
+    padding: 10px 12px;
+    background: var(--color-surface);
+    color: var(--color-text);
+    border: 1px solid #d1d5db;
+    border-radius: var(--radius-sm);
+    font: inherit;
+    font-size: 15px;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.search-field input::placeholder {
+    color: #9ca3af;
+}
+
+.search-field input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+#clear-search {
+    flex-shrink: 0;
+    min-height: 44px;
+    padding: 10px 18px;
+    background: var(--color-surface);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+#clear-search:hover {
+    background: var(--color-background);
+    border-color: #cbd5e1;
+}
+
+/* Search suggestions container */
+
+.search-results {
+    display: none;
+    margin-top: 8px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+}
+
+.search-result-item {
+    display: block;
+    width: 100%;
+    padding: 12px 14px;
+    text-align: left;
+    background: var(--color-surface);
+    color: var(--color-text);
+    border: none;
+    border-bottom: 1px solid var(--color-border);
+    border-radius: 0;
+    font: inherit;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item:hover {
+    background: var(--color-background);
+}
+
+.search-result-item:focus-visible {
+    position: relative;
+    outline: 2px solid var(--color-primary);
+    outline-offset: -2px;
+}
+
+.search-empty {
+    margin: 0;
+    padding: 12px 14px;
+    color: var(--color-muted);
+    font-size: 14px;
+}
+
+
+/* =========================
+   4. Distance Calculator
+========================= */
+
+.distance-controls {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) auto auto;
+    align-items: end;
+    gap: 14px;
+}
+
+.distance-controls div {
+    min-width: 0;
+}
+
+.distance-controls select {
+    display: block;
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 40px 10px 12px;
+
+    background-color: var(--color-surface);
+    color: var(--color-text);
+
+    border: 1px solid #d1d5db;
+    border-radius: var(--radius-sm);
+
+    font: inherit;
+    cursor: pointer;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px 16px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.distance-controls select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+
+/* =========================
+   5. Buttons
+========================= */
+
+button {
+    min-height: 44px;
+    padding: 10px 16px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+#calculate-distance {
+    background: var(--color-primary);
+    color: #ffffff;
+    white-space: nowrap;
+}
+
+#calculate-distance:hover {
+    background: var(--color-primary-hover);
+}
+
+/* Swap is a secondary action */
+
+#swap-places {
+    background: var(--color-surface);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    white-space: nowrap;
+}
+
+#swap-places:hover {
+    background: var(--color-background);
+    border-color: #cbd5e1;
+}
+
+button:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+
+/* =========================
+   6. Distance Result
+========================= */
+
+#distance-result {
+    margin: 20px 0 0;
+    padding: 14px 16px;
+    background: var(--color-primary-light);
+    border: 1px solid var(--color-primary-border);
+    border-radius: var(--radius-md);
+    color: #1e40af;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+
+/* =========================
+   7. Google Map
+========================= */
 
 #map {
     width: 100%;
-    height: 800px;
-    border: 2px solid black;
+    height: 650px;
+    overflow: hidden;
+    background: #e2e8f0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
 }
+
+
+/* =========================
+   8. Place InfoWindow Card
+========================= */
 
 .place-card {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 12px;
-
     width: 220px;
-    padding: 10px;
+    padding: 8px;
 }
 
 .place-icon {
-    font-size: 28px;
+    flex-shrink: 0;
+    font-size: 26px;
+}
+
+.place-content {
+    min-width: 0;
 }
 
 .place-content h3 {
-    margin: 0 0 5px;
-    font-size: 18px;
+    margin: 0 0 6px;
+    color: var(--color-text);
+    font-size: 17px;
 }
 
 .place-content p {
     margin: 0;
-    color: #666;
+    color: var(--color-muted);
     font-size: 14px;
+    line-height: 1.5;
+}
+
+
+/* =========================
+   9. Tablet Layout
+========================= */
+
+@media (max-width: 900px) {
+    body {
+        padding: 20px;
+    }
+
+    .distance-controls {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #calculate-distance,
+    #swap-places {
+        width: 100%;
+    }
+
+    #map {
+        height: 550px;
+    }
+}
+
+
+/* =========================
+   10. Mobile Layout
+========================= */
+
+@media (max-width: 600px) {
+    body {
+        padding: 14px;
+    }
+
+    h1 {
+        font-size: 26px;
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        font-size: 20px;
+        margin-bottom: 16px;
+    }
+
+    .place-search,
+    .distance-calculator {
+        padding: 18px;
+        margin-bottom: 16px;
+        border-radius: var(--radius-md);
+    }
+
+    .search-field {
+        gap: 8px;
+    }
+
+    .search-field input {
+        font-size: 14px;
+    }
+
+    #clear-search {
+        padding: 10px 12px;
+    }
+
+    .distance-controls {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+    }
+
+    #calculate-distance,
+    #swap-places {
+        width: 100%;
+    }
+
+    #map {
+        height: 480px;
+        border-radius: var(--radius-md);
+    }
+}
+
+
+/* =========================
+   11. Reduced Motion
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,10 +14,47 @@
 
     <h1>My Places Map</h1>
 
+    <section class="place-search">
+        <label for="place-search-input">Find a place</label>
+
+        <div class="search-field">
+            <input type="search" id="place-search-input" placeholder="Search cities, e.g. Dubai or Tokyo"
+                autocomplete="off">
+
+            <button type="button" id="clear-search">Clear</button>
+        </div>
+
+        <div id="search-results" class="search-results"></div>
+    </section>
+    <section class="distance-calculator">
+        <h2>Calculate Distance</h2>
+
+        <div class="distance-controls">
+            <div>
+                <label for="start-place">Starting Place</label>
+                <select id="start-place">
+                    <option value="">Select starting place</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="end-place">Destination</label>
+                <select id="end-place">
+                    <option value="">Select destination</option>
+                </select>
+            </div>
+
+            <button id="calculate-distance">Calculate Distance</button>
+            <button id="swap-places">⇅ Swap Places</button>
+        </div>
+
+        <p id="distance-result">Select two places to get started.</p>
+    </section>
     <div id="map"></div>
 
     <script src="config.js"></script>
     <script src="script.js"></script>
 
 </body>
+
 </html>
