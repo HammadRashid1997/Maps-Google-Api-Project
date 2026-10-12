@@ -1,6 +1,8 @@
 # 📍 My Places Map
 
-A lightweight browser app that renders a Google Map and plots a collection of favorite locations from a JSON file. Each marker opens a custom info window with the location name and description.
+I built this project to create a simple personal map of the places that matter to me, whether they are favorite cities, memorable travel spots, or places I want to revisit. It is a practical way to visualize locations in a clean and interactive format while learning how to work with the Google Maps API in a real web app.
+
+This lightweight browser app renders a Google Map and plots a collection of favorite locations from a JSON file. Each marker opens a custom info window with the location name and description.
 
 ## Overview
 
@@ -54,11 +56,20 @@ Use any local static server. For example:
 python3 -m http.server 8000
 ```
 
-Then open:
+Then open the app in your browser:
 
 ```text
 http://localhost:8000
 ```
+
+If you are using Playwright for browser testing or local preview, you can launch it directly with:
+
+```bash
+npx playwright install --with-deps chromium
+npx playwright open http://localhost:8000
+```
+
+This is useful when you want to test the page, automate browser interactions, or quickly preview the map in a Playwright-managed browser.
 
 You can also use VS Code's Live Server extension if preferred.
 
