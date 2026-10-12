@@ -453,3 +453,24 @@ button:active {
         animation-iteration-count: 1 !important;
     }
 }
+
+
+/* Google Maps control polish */
+
+#map {
+    position: relative;
+}
+
+/* Keep the map controls visually consistent with the app */
+#map .gm-style .gm-style-mtc button {
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    border-radius: 6px !important;
+}
+
+/* Make map controls easier to distinguish from the map */
+#map .gm-style .gm-style-mtc {
+    border-radius: 6px;
+    overflow: hidden;
+}

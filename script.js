@@ -1,4 +1,4 @@
-
+// Script.js file
 function populatePlaceDropdowns(places) {
     const startSelect = document.getElementById("start-place");
     const endSelect = document.getElementById("end-place");
@@ -44,13 +44,25 @@ function calculateDistance(place1, place2) {
 
 function initMap() {
 
+
     const map = new google.maps.Map(document.getElementById("map"), {
         zoom: 5,
         center: {
             lat: 31.5204,
             lng: 74.3587
-        }
+        },
+        mapTypeControl: true,
+        mapTypeControlOptions: {
+            style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+            position: google.maps.ControlPosition.TOP_RIGHT,
+            mapTypeIds: ["roadmap", "satellite"]
+        },
+        streetViewControl: false,
+        fullscreenControl: true,
+        zoomControl: true
     });
+    const initialMapCenter = map.getCenter();
+    const initialZoom = map.getZoom();
 
     let distanceLine = null;
 
@@ -144,9 +156,33 @@ function initMap() {
         })
         .then(places => {
 
+            const visitedPlaces = new Set(
+                JSON.parse(localStorage.getItem("visitedPlaces") || "[]")
+            );
+
+            function saveVisitedPlaces() {
+                localStorage.setItem(
+                    "visitedPlaces",
+                    JSON.stringify([...visitedPlaces])
+                );
+            }
+
+            function getMarkerIcon(isVisited) {
+                return {
+                    path: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z",
+                    fillColor: isVisited ? "#16a34a" : "#2563eb",
+                    fillOpacity: 1,
+                    strokeColor: "#ffffff",
+                    strokeWeight: 1.5,
+                    scale: 1.5,
+                    anchor: new google.maps.Point(12, 22)
+                };
+            }
+
             places.forEach(place => {
 
                 const marker = new google.maps.Marker({
+                    icon: getMarkerIcon(visitedPlaces.has(place.name)),
                     position: {
                         lat: place.lat,
                         lng: place.lng
@@ -163,9 +199,67 @@ function initMap() {
             <div class="place-content">
                 <h3>${place.name}</h3>
                 <p>${place.description}</p>
+
+                <button
+                    type="button"
+                    id="visited-toggle-button"
+                    style="
+                        margin-top: 10px;
+                        padding: 8px 12px;
+                        border: none;
+                        border-radius: 6px;
+                        background: #16a34a;
+                        color: white;
+                        cursor: pointer;
+                    "
+                >
+                    ${visitedPlaces.has(place.name)
+                            ? "Mark as not visited"
+                            : "Mark as visited"}
+                </button>
             </div>
         </div>
     `
+                });
+
+
+                infoWindow.addListener("domready", () => {
+                    const visitedButton = document.getElementById(
+                        "visited-toggle-button"
+                    );
+
+                    if (!visitedButton) return;
+
+                    // Set the correct button label whenever the popup opens
+                    visitedButton.textContent = visitedPlaces.has(place.name)
+                        ? "Mark as not visited"
+                        : "Mark as visited";
+
+                    visitedButton.onclick = () => {
+                        if (visitedPlaces.has(place.name)) {
+                            visitedPlaces.delete(place.name);
+                        } else {
+                            visitedPlaces.add(place.name);
+                        }
+
+                        // Save the updated list in the browser
+                        saveVisitedPlaces();
+
+                        // Update the marker color immediately
+                        marker.setIcon(getMarkerIcon(visitedPlaces.has(place.name)));
+
+                        // Update the button label
+                        visitedButton.textContent = visitedPlaces.has(place.name)
+                            ? "Mark as not visited"
+                            : "Mark as visited";
+                    };
+                });
+
+
+                // Reset the map when the InfoWindow's close button is clicked
+                infoWindow.addListener("closeclick", () => {
+                    map.panTo(initialMapCenter);
+                    map.setZoom(initialZoom);
                 });
 
                 // Store the marker and InfoWindow for search
@@ -188,7 +282,7 @@ function initMap() {
             const clearSearchButton = document.getElementById("clear-search");
             const searchResults = document.getElementById("search-results");
 
-            // Display matching cities as the user types
+            // Display matching cities as the user type
 
             // Track which search suggestion is highlighted
             let selectedSuggestionIndex = -1;
@@ -325,12 +419,27 @@ function initMap() {
             });
 
             // Clear the search input and suggestions
+
             clearSearchButton.addEventListener("click", () => {
+                // Clear the search input and suggestions
                 searchInput.value = "";
                 searchResults.replaceChildren();
                 searchResults.style.display = "none";
+                selectedSuggestionIndex = -1;
+
+                // Close all open InfoWindows
+                Object.values(placeInfoWindows).forEach(infoWindow => {
+                    infoWindow.close();
+                });
+
+                // Reset the map to its original center and zoom
+                map.panTo(initialMapCenter);
+                map.setZoom(initialZoom);
+
+                // Return focus to the search input
                 searchInput.focus();
             });
+
 
         })
         .catch(error => {
