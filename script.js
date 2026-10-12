@@ -54,6 +54,11 @@ function initMap() {
 
     let distanceLine = null;
 
+
+    const placeMarkers = {};
+    const placeInfoWindows = {};
+
+
     fetch("places.json")
         .then(response => {
 
@@ -163,6 +168,10 @@ function initMap() {
     `
                 });
 
+                // Store the marker and InfoWindow for search
+                placeMarkers[place.name] = marker;
+                placeInfoWindows[place.name] = infoWindow;
+
                 marker.addListener("click", () => {
 
                     infoWindow.open({
@@ -172,6 +181,155 @@ function initMap() {
 
                 });
 
+            });
+
+            // Search functionality
+            const searchInput = document.getElementById("place-search-input");
+            const clearSearchButton = document.getElementById("clear-search");
+            const searchResults = document.getElementById("search-results");
+
+            // Display matching cities as the user types
+
+            // Track which search suggestion is highlighted
+            let selectedSuggestionIndex = -1;
+
+            function highlightSuggestion(index) {
+                const suggestions = searchResults.querySelectorAll(
+                    ".search-result-item"
+                );
+
+                if (suggestions.length === 0) {
+                    selectedSuggestionIndex = -1;
+                    return;
+                }
+
+                // Keep the selected index within the available suggestions
+                selectedSuggestionIndex =
+                    (index + suggestions.length) % suggestions.length;
+
+                suggestions.forEach((suggestion, i) => {
+                    const isSelected = i === selectedSuggestionIndex;
+
+                    suggestion.style.backgroundColor = isSelected
+                        ? "#eff6ff"
+                        : "";
+
+                    suggestion.setAttribute(
+                        "aria-selected",
+                        String(isSelected)
+                    );
+                });
+
+                suggestions[selectedSuggestionIndex].scrollIntoView({
+                    block: "nearest"
+                });
+            }
+
+            searchInput.addEventListener("keydown", event => {
+                const suggestions = searchResults.querySelectorAll(
+                    ".search-result-item"
+                );
+
+                if (event.key === "ArrowDown" && suggestions.length > 0) {
+                    event.preventDefault();
+                    highlightSuggestion(selectedSuggestionIndex + 1);
+                }
+
+                if (event.key === "ArrowUp" && suggestions.length > 0) {
+                    event.preventDefault();
+                    highlightSuggestion(selectedSuggestionIndex - 1);
+                }
+
+                if (event.key === "Enter" && selectedSuggestionIndex >= 0) {
+                    event.preventDefault();
+                    suggestions[selectedSuggestionIndex].click();
+                }
+
+                if (event.key === "Escape") {
+                    searchResults.replaceChildren();
+                    searchResults.style.display = "none";
+                    selectedSuggestionIndex = -1;
+                }
+            });
+
+            searchInput.addEventListener("input", () => {
+                const searchText = searchInput.value.trim().toLowerCase();
+
+                // Clear previous suggestions
+                searchResults.replaceChildren();
+                selectedSuggestionIndex = -1;
+
+                // Hide suggestions when the input is empty
+                if (searchText === "") {
+                    searchResults.style.display = "none";
+                    return;
+                }
+
+                // Find cities whose names match the search
+                const matchingPlaces = places.filter(place =>
+                    place.name.toLowerCase().includes(searchText)
+                );
+
+                // Show a message if no cities match
+                if (matchingPlaces.length === 0) {
+                    const message = document.createElement("p");
+                    message.className = "search-empty";
+                    message.textContent = "No places found. Try another city.";
+
+                    searchResults.appendChild(message);
+                    searchResults.style.display = "block";
+                    return;
+                }
+
+                // Create a clickable suggestion for each matching city
+                matchingPlaces.forEach(place => {
+                    const resultButton = document.createElement("button");
+
+                    resultButton.type = "button";
+                    resultButton.className = "search-result-item";
+                    resultButton.textContent = place.name;
+
+                    resultButton.addEventListener("click", () => {
+                        // Center the map on the selected city
+                        map.panTo({
+                            lat: place.lat,
+                            lng: place.lng
+                        });
+
+                        // Zoom in on the selected city
+                        map.setZoom(9);
+
+                        // Open the city's existing information window
+                        // Close any previously opened place information windows
+                        Object.values(placeInfoWindows).forEach(infoWindow => {
+                            infoWindow.close();
+                        });
+
+                        // Open the selected city's information window
+                        placeInfoWindows[place.name].open({
+                            anchor: placeMarkers[place.name],
+                            map: map
+                        });
+
+                        // Update the input and hide suggestions
+                        searchInput.value = place.name;
+                        searchResults.replaceChildren();
+                        searchResults.style.display = "none";
+                    });
+
+                    searchResults.appendChild(resultButton);
+                });
+
+                // Display the suggestions
+                searchResults.style.display = "block";
+            });
+
+            // Clear the search input and suggestions
+            clearSearchButton.addEventListener("click", () => {
+                searchInput.value = "";
+                searchResults.replaceChildren();
+                searchResults.style.display = "none";
+                searchInput.focus();
             });
 
         })
