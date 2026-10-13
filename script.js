@@ -42,9 +42,7 @@ function calculateDistance(place1, place2) {
     return earthRadius * centralAngle;
 }
 
-function initMap() {
-
-
+window.initMap = function () {
     const map = new google.maps.Map(document.getElementById("map"), {
         zoom: 5,
         center: {
