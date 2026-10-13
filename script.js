@@ -167,6 +167,29 @@ function initMap() {
                 );
             }
 
+            function updateTravelProgress(places) {
+                const totalPlaces = places.length;
+                const visitedCount = places.filter(place =>
+                    visitedPlaces.has(place.name)
+                ).length;
+
+                const percentage = totalPlaces === 0
+                    ? 0
+                    : Math.round((visitedCount / totalPlaces) * 100);
+
+                document.getElementById("total-places").textContent = totalPlaces;
+                document.getElementById("visited-places-count").textContent = visitedCount;
+                document.getElementById("exploration-percentage").textContent = `${percentage}%`;
+
+                const progressFill = document.getElementById("progress-fill");
+                progressFill.style.width = `${percentage}%`;
+
+                const progressBar = document.getElementById("travel-progress");
+                progressBar.setAttribute("aria-valuenow", percentage);
+            }
+
+            updateTravelProgress(places);
+
             function getMarkerIcon(isVisited) {
                 return {
                     path: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z",
@@ -223,6 +246,51 @@ function initMap() {
                 });
 
 
+const filterButtons = document.querySelectorAll(".filter-button");
+
+let currentPlaceFilter = "all";
+
+function applyPlaceFilter() {
+    Object.entries(placeMarkers).forEach(([placeName, marker]) => {
+        const isVisited = visitedPlaces.has(placeName);
+
+        let shouldShow = true;
+
+        if (currentPlaceFilter === "visited") {
+            shouldShow = isVisited;
+        } else if (currentPlaceFilter === "not-visited") {
+            shouldShow = !isVisited;
+        }
+
+        // Show or hide the marker
+        marker.setMap(shouldShow ? map : null);
+
+        // Close the popup if its marker is being hidden
+        if (!shouldShow) {
+            placeInfoWindows[placeName].close();
+        }
+    });
+
+    // Update the active button styling
+    filterButtons.forEach(button => {
+        const isActive = button.dataset.filter === currentPlaceFilter;
+
+        button.classList.toggle("active", isActive);
+        button.setAttribute("aria-pressed", String(isActive));
+    });
+}
+
+// Listen for clicks on each filter button
+filterButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        currentPlaceFilter = button.dataset.filter;
+        applyPlaceFilter();
+    });
+});
+
+// Apply the default filter when the map loads
+applyPlaceFilter();
+
                 infoWindow.addListener("domready", () => {
                     const visitedButton = document.getElementById(
                         "visited-toggle-button"
@@ -244,9 +312,13 @@ function initMap() {
 
                         // Save the updated list in the browser
                         saveVisitedPlaces();
+                        updateTravelProgress(places);
 
                         // Update the marker color immediately
                         marker.setIcon(getMarkerIcon(visitedPlaces.has(place.name)));
+
+                        // apply the place filter
+                        applyPlaceFilter();
 
                         // Update the button label
                         visitedButton.textContent = visitedPlaces.has(place.name)

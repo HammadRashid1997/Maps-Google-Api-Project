@@ -14,43 +14,120 @@
 
     <h1>My Places Map</h1>
 
-    <section class="place-search">
-        <label for="place-search-input">Find a place</label>
+    <!-- UI Layout -->
+    <div class="dashboard-layout">
 
-        <div class="search-field">
-            <input type="search" id="place-search-input" placeholder="Search cities, e.g. Dubai or Tokyo"
-                autocomplete="off">
+        <section class="explore-places">
+            <h2>Explore Places</h2>
+            <p class="dashboard-subtitle">
+                Search for cities or filter them by your travel status.
+            </p>
 
-            <button type="button" id="clear-search">Clear</button>
-        </div>
+            <!-- Search -->
+            <div class="explore-search">
+                <label for="place-search-input">Find a place</label>
 
-        <div id="search-results" class="search-results"></div>
-    </section>
-    <section class="distance-calculator">
-        <h2>Calculate Distance</h2>
+                <div class="search-field">
+                    <input type="search" id="place-search-input" placeholder="Search cities, e.g. Dubai or Tokyo"
+                        autocomplete="off">
 
-        <div class="distance-controls">
-            <div>
-                <label for="start-place">Starting Place</label>
-                <select id="start-place">
-                    <option value="">Select starting place</option>
-                </select>
+                    <button type="button" id="clear-search">Clear</button>
+                </div>
+
+                <div id="search-results" class="search-results"></div>
             </div>
 
-            <div>
-                <label for="end-place">Destination</label>
-                <select id="end-place">
-                    <option value="">Select destination</option>
-                </select>
+            <!-- Filters -->
+            <div class="explore-filters">
+                <h3>Filter Places</h3>
+
+                <div class="filter-buttons">
+                    <button type="button" class="filter-button active" data-filter="all" aria-pressed="true">
+                        All Places
+                    </button>
+
+                    <button type="button" class="filter-button" data-filter="visited" aria-pressed="false">
+                        Visited
+                    </button>
+
+                    <button type="button" class="filter-button" data-filter="not-visited" aria-pressed="false">
+                        Not Visited
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="distance-calculator">
+            <h2>Calculate Distance</h2>
+
+            <div class="distance-controls">
+                <div>
+                    <label for="start-place">Starting Place</label>
+                    <select id="start-place">
+                        <option value="">Select source city</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="end-place">Destination</label>
+                    <select id="end-place">
+                        <option value="">Select destination city</option>
+                    </select>
+                </div>
+
+                <button id="calculate-distance">Calculate Distance</button>
+                <button id="swap-places">⇅ Swap Places</button>
             </div>
 
-            <button id="calculate-distance">Calculate Distance</button>
-            <button id="swap-places">⇅ Swap Places</button>
-        </div>
+            <p id="distance-result">Select two places to get started.</p>
+        </section>
 
-        <p id="distance-result">Select two places to get started.</p>
-    </section>
-    <div id="map"></div>
+        <section class="travel-dashboard">
+            <h2>My Travel Progress</h2>
+            <p class="dashboard-subtitle">Track the places you've explored</p>
+
+            <div class="travel-stats">
+                <div class="travel-stat">
+                    <span class="stat-number" id="total-places">0</span>
+                    <span class="stat-label">Total Places</span>
+                </div>
+
+                <div class="travel-stat">
+                    <span class="stat-number" id="visited-places-count">0</span>
+                    <span class="stat-label">Places Visited</span>
+                </div>
+
+                <div class="travel-stat">
+                    <span class="stat-number" id="exploration-percentage">0%</span>
+                    <span class="stat-label">Explored</span>
+                </div>
+            </div>
+
+            <div class="progress-track" role="progressbar" aria-label="Travel exploration progress" aria-valuemin="0"
+                aria-valuemax="100" aria-valuenow="0" id="travel-progress">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </section>
+
+    </div>
+
+    <div class="map-container">
+        <div id="map"></div>
+
+        <div class="map-legend">
+            <h4>Travel Status</h4>
+
+            <div class="legend-item">
+                <span class="legend-dot visited"></span>
+                <span>Visited</span>
+            </div>
+
+            <div class="legend-item">
+                <span class="legend-dot not-visited"></span>
+                <span>Not visited</span>
+            </div>
+        </div>
+    </div>
 
     <script src="config.js"></script>
     <script src="script.js"></script>
