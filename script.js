@@ -244,50 +244,50 @@ window.initMap = function () {
                 });
 
 
-const filterButtons = document.querySelectorAll(".filter-button");
+                const filterButtons = document.querySelectorAll(".filter-button");
 
-let currentPlaceFilter = "all";
+                let currentPlaceFilter = "all";
 
-function applyPlaceFilter() {
-    Object.entries(placeMarkers).forEach(([placeName, marker]) => {
-        const isVisited = visitedPlaces.has(placeName);
+                function applyPlaceFilter() {
+                    Object.entries(placeMarkers).forEach(([placeName, marker]) => {
+                        const isVisited = visitedPlaces.has(placeName);
 
-        let shouldShow = true;
+                        let shouldShow = true;
 
-        if (currentPlaceFilter === "visited") {
-            shouldShow = isVisited;
-        } else if (currentPlaceFilter === "not-visited") {
-            shouldShow = !isVisited;
-        }
+                        if (currentPlaceFilter === "visited") {
+                            shouldShow = isVisited;
+                        } else if (currentPlaceFilter === "not-visited") {
+                            shouldShow = !isVisited;
+                        }
 
-        // Show or hide the marker
-        marker.setMap(shouldShow ? map : null);
+                        // Show or hide the marker
+                        marker.setMap(shouldShow ? map : null);
 
-        // Close the popup if its marker is being hidden
-        if (!shouldShow) {
-            placeInfoWindows[placeName].close();
-        }
-    });
+                        // Close the popup if its marker is being hidden
+                        if (!shouldShow) {
+                            placeInfoWindows[placeName].close();
+                        }
+                    });
 
-    // Update the active button styling
-    filterButtons.forEach(button => {
-        const isActive = button.dataset.filter === currentPlaceFilter;
+                    // Update the active button styling
+                    filterButtons.forEach(button => {
+                        const isActive = button.dataset.filter === currentPlaceFilter;
 
-        button.classList.toggle("active", isActive);
-        button.setAttribute("aria-pressed", String(isActive));
-    });
-}
+                        button.classList.toggle("active", isActive);
+                        button.setAttribute("aria-pressed", String(isActive));
+                    });
+                }
 
-// Listen for clicks on each filter button
-filterButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        currentPlaceFilter = button.dataset.filter;
-        applyPlaceFilter();
-    });
-});
+                // Listen for clicks on each filter button
+                filterButtons.forEach(button => {
+                    button.addEventListener("click", () => {
+                        currentPlaceFilter = button.dataset.filter;
+                        applyPlaceFilter();
+                    });
+                });
 
-// Apply the default filter when the map loads
-applyPlaceFilter();
+                // Apply the default filter when the map loads
+                applyPlaceFilter();
 
                 infoWindow.addListener("domready", () => {
                     const visitedButton = document.getElementById(
@@ -516,7 +516,6 @@ applyPlaceFilter();
             console.error("Error loading places:", error);
         });
 }
-
 
 const googleMapsScript = document.createElement("script");
 

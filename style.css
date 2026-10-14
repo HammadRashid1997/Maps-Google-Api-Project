@@ -206,12 +206,12 @@ h2 {
     padding: 10px 40px 10px 12px;
 
     background-color: var(--color-surface);
-    color: var(--color-text);
+    color: var(--color-muted);
 
     border: 1px solid #d1d5db;
     border-radius: var(--radius-sm);
 
-    font: inherit;
+    font: 10px;
     cursor: pointer;
 
     appearance: none;
@@ -315,7 +315,6 @@ button:active {
     box-shadow: var(--shadow-card);
 }
 
-
 /* =========================
    8. Place InfoWindow Card
 ========================= */
@@ -350,7 +349,6 @@ button:active {
     line-height: 1.5;
 }
 
-
 /* =========================
    9. Tablet Layout
 ========================= */
@@ -373,7 +371,6 @@ button:active {
         height: 550px;
     }
 }
-
 
 /* =========================
    10. Mobile Layout
@@ -429,7 +426,6 @@ button:active {
     }
 }
 
-
 /* =========================
    11. Reduced Motion
 ========================= */
@@ -444,7 +440,6 @@ button:active {
         animation-iteration-count: 1 !important;
     }
 }
-
 
 /* Google Maps control polish */
 
@@ -623,7 +618,6 @@ button:active {
         font-size: 11px;
     }
 }
-
 
 /* Place status filters */
 .place-filters {
