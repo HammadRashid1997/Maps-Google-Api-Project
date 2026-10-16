@@ -1,6 +1,4 @@
-/* =========================
-   1. Global Styles
-========================= */
+/* CSS Variables and Global Styles */
 
 :root {
     --color-primary: #2563eb;
@@ -31,10 +29,7 @@ body {
     line-height: 1.5;
 }
 
-h1,
-h2,
-h3,
-p {
+h1, h2, h3, p {
     margin-top: 0;
 }
 
@@ -52,11 +47,7 @@ h2 {
     line-height: 1.3;
 }
 
-/* =========================
-   2. Shared Section Styles
-========================= */
-
-.place-search,
+/* Shared section styles */
 .distance-calculator {
     width: 100%;
     max-width: 1100px;
@@ -68,11 +59,6 @@ h2 {
     box-shadow: var(--shadow-card);
 }
 
-/* =========================
-   3. Place Search
-========================= */
-
-.place-search label,
 .distance-controls label {
     display: block;
     margin-bottom: 8px;
@@ -136,7 +122,6 @@ h2 {
 }
 
 /* Search suggestions container */
-
 .search-results {
     display: none;
     margin-top: 8px;
@@ -184,9 +169,7 @@ h2 {
     font-size: 14px;
 }
 
-/* =========================
-   4. Distance Calculator
-========================= */
+/* Distance Calculator */
 
 .distance-controls {
     display: grid;
@@ -211,7 +194,6 @@ h2 {
     border: 1px solid #d1d5db;
     border-radius: var(--radius-sm);
 
-    font: 10px;
     cursor: pointer;
 
     appearance: none;
@@ -233,9 +215,7 @@ h2 {
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
-/* =========================
-   5. Buttons
-========================= */
+/* Buttons */
 
 button {
     min-height: 44px;
@@ -264,7 +244,6 @@ button {
 }
 
 /* Swap is a secondary action */
-
 #swap-places {
     background: var(--color-surface);
     color: var(--color-text);
@@ -286,9 +265,7 @@ button:active {
     transform: translateY(1px);
 }
 
-/* =========================
-   6. Distance Result
-========================= */
+/* Distance Result */
 
 #distance-result {
     margin: 20px 0 0;
@@ -301,9 +278,7 @@ button:active {
     font-weight: 600;
 }
 
-/* =========================
-   7. Google Map
-========================= */
+/* Google Maps */
 
 #map {
     width: 100%;
@@ -315,9 +290,7 @@ button:active {
     box-shadow: var(--shadow-card);
 }
 
-/* =========================
-   8. Place InfoWindow Card
-========================= */
+/* Place Info window card */
 
 .place-card {
     display: flex;
@@ -349,9 +322,7 @@ button:active {
     line-height: 1.5;
 }
 
-/* =========================
-   9. Tablet Layout
-========================= */
+/* Table Layout */
 
 @media (max-width: 900px) {
     body {
@@ -372,9 +343,7 @@ button:active {
     }
 }
 
-/* =========================
-   10. Mobile Layout
-========================= */
+/* Mobile Layout */
 
 @media (max-width: 600px) {
     body {
@@ -391,7 +360,6 @@ button:active {
         margin-bottom: 16px;
     }
 
-    .place-search,
     .distance-calculator {
         padding: 18px;
         margin-bottom: 16px;
@@ -415,8 +383,7 @@ button:active {
         gap: 16px;
     }
 
-    #calculate-distance,
-    #swap-places {
+    #calculate-distance, #swap-places {
         width: 100%;
     }
 
@@ -426,14 +393,10 @@ button:active {
     }
 }
 
-/* =========================
-   11. Reduced Motion
-========================= */
+/* Reduced Motion Preference */
 
 @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
+    *, *::before, *::after {
         scroll-behavior: auto !important;
         transition-duration: 0.01ms !important;
         animation-duration: 0.01ms !important;
@@ -461,14 +424,9 @@ button:active {
     overflow: hidden;
 }
 
-
 /* Map container and travel status legend */
 .map-container {
     position: relative;
-    width: 100%;
-}
-
-.map-container #map {
     width: 100%;
 }
 
@@ -524,7 +482,6 @@ button:active {
         padding: 10px 12px;
     }
 }
-
 
 /* Travel progress dashboard */
 .travel-dashboard {
@@ -619,91 +576,7 @@ button:active {
     }
 }
 
-.filter-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.filter-button {
-    padding: 9px 16px;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    background: #ffffff;
-    color: #475569;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s, color 0.2s;
-}
-
-.filter-button:hover {
-    background: #eff6ff;
-    border-color: #bfdbfe;
-}
-
-.filter-button.active {
-    background: #2563eb;
-    border-color: #2563eb;
-    color: #ffffff;
-}
-
-@media (max-width: 600px) {
-    .filter-buttons {
-        gap: 8px;
-    }
-
-    .filter-button {
-        padding: 8px 12px;
-        font-size: 12px;
-    }
-}
-
 /* Layout */
-
-.dashboard-layout {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 20px;
-    max-width: 1100px;
-    margin: 0 auto 24px;
-    align-items: stretch;
-    grid-auto-rows: auto;
-}
-
-.dashboard-layout > .travel-dashboard {
-    grid-column: 1 / -1;
-    min-height: auto;
-}
-
-.dashboard-layout > section {
-    width: 100%;
-    max-width: none;
-    margin: 0;
-    min-width: 0;
-    box-sizing: border-box;
-}
-
-.distance-controls {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-@media (max-width: 700px) {
-    .dashboard-layout {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-}
-
-@media (max-width: 700px) {
-    .dashboard-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .dashboard-layout > .travel-dashboard {
-        grid-column: auto;
-    }
-}
 
 .dashboard-layout {
     display: grid;
@@ -713,6 +586,10 @@ button:active {
     max-width: 1100px;
     margin: 0 auto 24px;
     align-items: stretch;
+}
+
+.dashboard-layout > .travel-dashboard {
+    grid-column: 1 / -1;
 }
 
 .dashboard-layout > section {
@@ -725,6 +602,10 @@ button:active {
     padding: 22px;
     display: flex;
     flex-direction: column;
+}
+
+.distance-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .dashboard-layout > section h2,
@@ -747,6 +628,10 @@ button:active {
     .dashboard-layout > section {
         height: auto;
         min-height: 0;
+    }
+
+    .dashboard-layout > .travel-dashboard {
+        grid-column: auto;
     }
 }
 
@@ -780,6 +665,7 @@ button:active {
 
 .explore-search {
     position: relative;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -848,11 +734,6 @@ button:active {
         height: auto;
         padding: 18px;
     }
-}
-
-.explore-search {
-    position: relative;
-    min-width: 0;
 }
 
 .explore-search .search-results {
