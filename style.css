@@ -619,18 +619,6 @@ button:active {
     }
 }
 
-/* Place status filters */
-.place-filters {
-    max-width: 1100px;
-    margin: 0 auto 20px;
-}
-
-.place-filters h3 {
-    margin: 0 0 12px;
-    color: #1e293b;
-    font-size: 16px;
-}
-
 .filter-buttons {
     display: flex;
     flex-wrap: wrap;
@@ -673,7 +661,6 @@ button:active {
 
 /* Layout */
 
-/* Two-column dashboard layout */
 .dashboard-layout {
     display: grid;
     grid-template-columns: 1.2fr 1fr;
@@ -689,7 +676,6 @@ button:active {
     min-height: auto;
 }
 
-/* Remove individual section margins that interfere with the grid */
 .dashboard-layout > section {
     width: 100%;
     max-width: none;
@@ -698,17 +684,10 @@ button:active {
     box-sizing: border-box;
 }
 
-/* Keep search results positioned within their section */
-.place-search {
-    position: relative;
-}
-
-/* Let each section use the available column width */
 .distance-controls {
     grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-/* Stack sections on smaller screens */
 @media (max-width: 700px) {
     .dashboard-layout {
         grid-template-columns: 1fr;
@@ -726,7 +705,6 @@ button:active {
     }
 }
 
-/* Consistent dashboard card heights */
 .dashboard-layout {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -749,24 +727,16 @@ button:active {
     flex-direction: column;
 }
 
-/* Keep card headings consistent */
 .dashboard-layout > section h2,
 .dashboard-layout > section h3 {
     margin-top: 0;
 }
 
-/* Let the travel progress content use the available space */
 .travel-dashboard .travel-stats {
     flex: 1;
     align-content: center;
 }
 
-/* Keep filter buttons near the top */
-.place-filters .filter-buttons {
-    align-content: start;
-}
-
-/* Responsive layout */
 @media (max-width: 700px) {
     .dashboard-layout {
         grid-template-columns: 1fr;
@@ -780,74 +750,6 @@ button:active {
     }
 }
 
-/* Filter Places card */
-.dashboard-layout > .place-filters {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 16px;
-    padding: 22px;
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
-
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-
-    min-height: 220px;
-    height: 100%;
-    box-sizing: border-box;
-}
-
-/* Filter card heading */
-.place-filters h3 {
-    margin: 0;
-    color: #1e293b;
-    font-size: 18px;
-    font-weight: 600;
-}
-
-/* Filter button layout */
-.place-filters .filter-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    gap: 10px;
-}
-
-/* Filter button styling */
-.place-filters .filter-button {
-    padding: 10px 16px;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    background: #ffffff;
-    color: #475569;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease, border-color 0.2s ease,
-        color 0.2s ease;
-}
-
-.place-filters .filter-button:hover {
-    background: #eff6ff;
-    border-color: #bfdbfe;
-}
-
-.place-filters .filter-button.active {
-    background: #2563eb;
-    border-color: #2563eb;
-    color: #ffffff;
-}
-
-/* Mobile spacing */
-@media (max-width: 700px) {
-    .dashboard-layout > .place-filters {
-        min-height: 0;
-        height: auto;
-        padding: 18px;
-    }
-}
-
-/* Combined Explore Places card */
 .dashboard-layout > .explore-places {
     background: #ffffff;
     border: 1px solid #e2e8f0;
@@ -876,7 +778,6 @@ button:active {
     line-height: 1.5;
 }
 
-/* Search area */
 .explore-search {
     position: relative;
     display: flex;
@@ -903,7 +804,6 @@ button:active {
     min-width: 0;
 }
 
-/* Filter area */
 .explore-filters {
     display: flex;
     flex-direction: column;
@@ -950,7 +850,6 @@ button:active {
     }
 }
 
-/* Search suggestions float instead of expanding the card */
 .explore-search {
     position: relative;
     min-width: 0;
