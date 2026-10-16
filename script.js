@@ -1,4 +1,4 @@
-// Script.js file
+// Populate the start and end place dropdowns with the places from the JSON file
 function populatePlaceDropdowns(places) {
     const startSelect = document.getElementById("start-place");
     const endSelect = document.getElementById("end-place");
@@ -17,8 +17,9 @@ function populatePlaceDropdowns(places) {
     });
 }
 
+// Calculate the distance between two places using the Haversine formula
 function calculateDistance(place1, place2) {
-    const earthRadius = 6371; // Earth's radius in kilometres
+    const earthRadius = 6371;
 
     const toRadians = degrees => degrees * Math.PI / 180;
 
@@ -28,20 +29,14 @@ function calculateDistance(place1, place2) {
     const latDifference = toRadians(place2.lat - place1.lat);
     const lngDifference = toRadians(place2.lng - place1.lng);
 
-    const a =
-        Math.sin(latDifference / 2) ** 2 +
-        Math.cos(lat1) *
-        Math.cos(lat2) *
-        Math.sin(lngDifference / 2) ** 2;
+    const a = Math.sin(latDifference / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(lngDifference / 2) ** 2;
 
-    const centralAngle = 2 * Math.atan2(
-        Math.sqrt(a),
-        Math.sqrt(1 - a)
-    );
+    const centralAngle = 2 * Math.atan2(Math.sqrt(a),Math.sqrt(1 - a));
 
     return earthRadius * centralAngle;
 }
 
+// Initialize the Google Map and set up event listeners for user interactions
 window.initMap = function () {
     const map = new google.maps.Map(document.getElementById("map"), {
         zoom: 5,
@@ -59,33 +54,28 @@ window.initMap = function () {
         fullscreenControl: true,
         zoomControl: true
     });
+
     const initialMapCenter = map.getCenter();
     const initialZoom = map.getZoom();
 
     let distanceLine = null;
 
-
     const placeMarkers = {};
     const placeInfoWindows = {};
 
-
     fetch("places.json")
         .then(response => {
-
             if (!response.ok) {
                 throw new Error("Could not load places.json");
             }
-
             return response.json();
         })
 
         .then(places => {
             populatePlaceDropdowns(places);
 
-            // Calculate Distance Button functionality
             const calculateButton = document.getElementById("calculate-distance");
 
-            // Swap Button functionality
             const swapButton = document.getElementById("swap-places");
 
             swapButton.addEventListener("click", () => {
@@ -97,6 +87,7 @@ window.initMap = function () {
                 startSelect.value = endSelect.value;
                 endSelect.value = currentStart;
             });
+
             calculateButton.addEventListener("click", () => {
                 const startName = document.getElementById("start-place").value;
                 const endName = document.getElementById("end-place").value;
@@ -116,15 +107,12 @@ window.initMap = function () {
                 const startPlace = places.find(place => place.name === startName);
                 const endPlace = places.find(place => place.name === endName);
 
-
                 const distance = calculateDistance(startPlace, endPlace);
 
-                // Remove the previous line, if one exists
                 if (distanceLine) {
                     distanceLine.setMap(null);
                 }
 
-                // Draw a new line between the selected places
                 distanceLine = new google.maps.Polyline({
                     path: [
                         { lat: startPlace.lat, lng: startPlace.lng },
@@ -133,15 +121,12 @@ window.initMap = function () {
                     geodesic: true,
                     strokeColor: "#2563eb",
                     strokeOpacity: 0.9,
-                    strokeWeight: 4,
+                    strokeWeight: 6,
                     map: map
                 });
 
-                // Display the calculated distance
-                result.textContent =
-                    `Distance from ${startName} to ${endName}: ${distance.toFixed(2)} km`;
+                result.textContent = `Distance from ${startName} to ${endName}: ${distance.toFixed(2)} km`;
 
-                // Adjust the map so both places are visible
                 const bounds = new google.maps.LatLngBounds();
 
                 bounds.extend({ lat: startPlace.lat, lng: startPlace.lng });
@@ -153,7 +138,6 @@ window.initMap = function () {
             return places;
         })
         .then(places => {
-
             const visitedPlaces = new Set(
                 JSON.parse(localStorage.getItem("visitedPlaces") || "[]")
             );
@@ -171,9 +155,7 @@ window.initMap = function () {
                     visitedPlaces.has(place.name)
                 ).length;
 
-                const percentage = totalPlaces === 0
-                    ? 0
-                    : Math.round((visitedCount / totalPlaces) * 100);
+                const percentage = totalPlaces === 0 ? 0 : Math.round((visitedCount / totalPlaces) * 100);
 
                 document.getElementById("total-places").textContent = totalPlaces;
                 document.getElementById("visited-places-count").textContent = visitedCount;
@@ -243,7 +225,6 @@ window.initMap = function () {
     `
                 });
 
-
                 const filterButtons = document.querySelectorAll(".filter-button");
 
                 let currentPlaceFilter = "all";
@@ -260,16 +241,13 @@ window.initMap = function () {
                             shouldShow = !isVisited;
                         }
 
-                        // Show or hide the marker
                         marker.setMap(shouldShow ? map : null);
 
-                        // Close the popup if its marker is being hidden
                         if (!shouldShow) {
                             placeInfoWindows[placeName].close();
                         }
                     });
 
-                    // Update the active button styling
                     filterButtons.forEach(button => {
                         const isActive = button.dataset.filter === currentPlaceFilter;
 
@@ -278,7 +256,6 @@ window.initMap = function () {
                     });
                 }
 
-                // Listen for clicks on each filter button
                 filterButtons.forEach(button => {
                     button.addEventListener("click", () => {
                         currentPlaceFilter = button.dataset.filter;
@@ -286,7 +263,6 @@ window.initMap = function () {
                     });
                 });
 
-                // Apply the default filter when the map loads
                 applyPlaceFilter();
 
                 infoWindow.addListener("domready", () => {
@@ -296,10 +272,7 @@ window.initMap = function () {
 
                     if (!visitedButton) return;
 
-                    // Set the correct button label whenever the popup opens
-                    visitedButton.textContent = visitedPlaces.has(place.name)
-                        ? "Mark as not visited"
-                        : "Mark as visited";
+                    visitedButton.textContent = visitedPlaces.has(place.name) ? "Mark as not visited" : "Mark as visited";
 
                     visitedButton.onclick = () => {
                         if (visitedPlaces.has(place.name)) {
@@ -308,53 +281,38 @@ window.initMap = function () {
                             visitedPlaces.add(place.name);
                         }
 
-                        // Save the updated list in the browser
                         saveVisitedPlaces();
                         updateTravelProgress(places);
 
-                        // Update the marker color immediately
                         marker.setIcon(getMarkerIcon(visitedPlaces.has(place.name)));
 
-                        // apply the place filter
                         applyPlaceFilter();
 
-                        // Update the button label
-                        visitedButton.textContent = visitedPlaces.has(place.name)
-                            ? "Mark as not visited"
-                            : "Mark as visited";
+                        visitedButton.textContent = visitedPlaces.has(place.name) ? "Mark as not visited" : "Mark as visited";
                     };
                 });
 
-
-                // Reset the map when the InfoWindow's close button is clicked
                 infoWindow.addListener("closeclick", () => {
                     map.panTo(initialMapCenter);
                     map.setZoom(initialZoom);
                 });
 
-                // Store the marker and InfoWindow for search
                 placeMarkers[place.name] = marker;
                 placeInfoWindows[place.name] = infoWindow;
 
                 marker.addListener("click", () => {
-
                     infoWindow.open({
                         anchor: marker,
                         map: map
                     });
-
                 });
 
             });
 
-            // Search functionality
             const searchInput = document.getElementById("place-search-input");
             const clearSearchButton = document.getElementById("clear-search");
             const searchResults = document.getElementById("search-results");
 
-            // Display matching cities as the user type
-
-            // Track which search suggestion is highlighted
             let selectedSuggestionIndex = -1;
 
             function highlightSuggestion(index) {
@@ -367,16 +325,12 @@ window.initMap = function () {
                     return;
                 }
 
-                // Keep the selected index within the available suggestions
-                selectedSuggestionIndex =
-                    (index + suggestions.length) % suggestions.length;
+                selectedSuggestionIndex = (index + suggestions.length) % suggestions.length;
 
                 suggestions.forEach((suggestion, i) => {
                     const isSelected = i === selectedSuggestionIndex;
 
-                    suggestion.style.backgroundColor = isSelected
-                        ? "#eff6ff"
-                        : "";
+                    suggestion.style.backgroundColor = isSelected ? "#eff6ff" : "";
 
                     suggestion.setAttribute(
                         "aria-selected",
@@ -419,22 +373,18 @@ window.initMap = function () {
             searchInput.addEventListener("input", () => {
                 const searchText = searchInput.value.trim().toLowerCase();
 
-                // Clear previous suggestions
                 searchResults.replaceChildren();
                 selectedSuggestionIndex = -1;
 
-                // Hide suggestions when the input is empty
                 if (searchText === "") {
                     searchResults.style.display = "none";
                     return;
                 }
 
-                // Find cities whose names match the search
                 const matchingPlaces = places.filter(place =>
                     place.name.toLowerCase().includes(searchText)
                 );
 
-                // Show a message if no cities match
                 if (matchingPlaces.length === 0) {
                     const message = document.createElement("p");
                     message.className = "search-empty";
@@ -445,7 +395,6 @@ window.initMap = function () {
                     return;
                 }
 
-                // Create a clickable suggestion for each matching city
                 matchingPlaces.forEach(place => {
                     const resultButton = document.createElement("button");
 
@@ -454,28 +403,22 @@ window.initMap = function () {
                     resultButton.textContent = place.name;
 
                     resultButton.addEventListener("click", () => {
-                        // Center the map on the selected city
                         map.panTo({
                             lat: place.lat,
                             lng: place.lng
                         });
 
-                        // Zoom in on the selected city
                         map.setZoom(9);
-
-                        // Open the city's existing information window
-                        // Close any previously opened place information windows
+                        
                         Object.values(placeInfoWindows).forEach(infoWindow => {
                             infoWindow.close();
                         });
 
-                        // Open the selected city's information window
                         placeInfoWindows[place.name].open({
                             anchor: placeMarkers[place.name],
                             map: map
                         });
 
-                        // Update the input and hide suggestions
                         searchInput.value = place.name;
                         searchResults.replaceChildren();
                         searchResults.style.display = "none";
@@ -484,33 +427,25 @@ window.initMap = function () {
                     searchResults.appendChild(resultButton);
                 });
 
-                // Display the suggestions
                 searchResults.style.display = "block";
             });
 
-            // Clear the search input and suggestions
-
             clearSearchButton.addEventListener("click", () => {
-                // Clear the search input and suggestions
                 searchInput.value = "";
                 searchResults.replaceChildren();
+                
                 searchResults.style.display = "none";
                 selectedSuggestionIndex = -1;
 
-                // Close all open InfoWindows
                 Object.values(placeInfoWindows).forEach(infoWindow => {
                     infoWindow.close();
                 });
 
-                // Reset the map to its original center and zoom
                 map.panTo(initialMapCenter);
                 map.setZoom(initialZoom);
 
-                // Return focus to the search input
                 searchInput.focus();
             });
-
-
         })
         .catch(error => {
             console.error("Error loading places:", error);
@@ -519,8 +454,7 @@ window.initMap = function () {
 
 const googleMapsScript = document.createElement("script");
 
-googleMapsScript.src =
-    `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&callback=initMap`;
+googleMapsScript.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&callback=initMap`;
 
 googleMapsScript.async = true;
 googleMapsScript.defer = true;
